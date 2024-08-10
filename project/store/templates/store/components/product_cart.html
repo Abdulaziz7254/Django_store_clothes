@@ -1,0 +1,39 @@
+{% load likes_status_check %}
+
+<div class="col-xl-3 col-lg-4 col-md-4 col-12">
+												<div class="single-product">
+													<div class="product-img">
+														<a href="{% url 'detail' product.pk %}">
+															<img class="default-img" src="{{ product.get_image }}" alt="#">
+															<img class="hover-img" src="{{ product.get_image }}" alt="#">
+														</a>
+														<div class="button-head">
+															<div class="product-action">
+																<a href="{% url 'detail' product.pk %}"><i class="ti-eye"></i></a>
+																{% if request.user.is_authenticated %}
+																{% check_status request.user product.pk as like  %}
+																{% if like  %}
+																<a title="Wishlist" href="{% url 'add_to_liked' product.pk %}"><i class="ti-heart"  style="color:red;"></i><span>Delete from Wishlist</span></a>
+																{% else %}
+																<a title="Wishlist" href="{% url 'add_to_liked' product.pk %}"><i class=" ti-heart "></i><span>Add to Wishlist</span></a>
+																{% endif %}
+																{% else %}
+																<a title="Wishlist" ><i class=" ti-heart "></i><span>First you should login</span></a>
+																{% endif %}
+															</div>
+			  												{% if request.user.is_authenticated %}
+			  												<div class="product-action-2">
+																<a href="{% url 'quantity' product.pk 'add' %}">Add to cart</a>
+															</div>
+															{% endif %}
+
+														</div>
+													</div>
+													<div class="product-content">
+														<h3><a>{{ product.name }}</a></h3>
+														<div class="product-price">
+															<span>${{ product.price }}</span>
+														</div>
+													</div>
+												</div>
+											</div>

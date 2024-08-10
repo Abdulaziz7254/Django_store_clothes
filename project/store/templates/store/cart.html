@@ -1,0 +1,196 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block main %}
+
+	
+
+
+
+	<!-- Breadcrumbs -->
+	<div class="breadcrumbs">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<div class="bread-inner">
+						<ul class="bread-list">
+							<li><a href="{% url 'index' %}">Home<i class="ti-arrow-right"></i></a></li>
+							<li class="active"><a href="{% url 'cart' %}">Cart</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- End Breadcrumbs -->
+			
+	<!-- Shopping Cart -->
+	<div class="shopping-cart section">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<!-- Shopping Summery -->
+					<table class="table shopping-summery">
+						<thead>
+							<tr class="main-hading ">
+								<th class="text-dark">PRODUCT</th>
+								<th class="text-dark">NAME</th>
+								<th class="text-center text-dark">UNIT PRICE</th>
+								<th class="text-center text-dark">QUANTITY</th>
+								<th class="text-center text-dark">TOTAL</th>
+								<th class="text-center text-dark"><a href="{% url 'clear' %}"><i class="ti-trash remove-icon"></i></a></th>
+							</tr>
+						</thead>
+						<tbody>
+						{% for product in cart_products %}
+							<tr>
+								<td class="image" data-title="No"><img src="{{ product.product.get_image }}" alt="#"></td>
+								<td class="product-des" data-title="Description">
+									<p class="product-name"><a href="{% url 'detail' product.product.pk %}">{{ product.product.name }}</a></p>
+									<p class="product-des">{{ product.product.description }}</p>
+								</td>
+								<td class="price" data-title="Price"><span>${{ product.product.price }}</span></td>
+								<td class="qty" data-title="Qty">
+									<div class="quantity">
+    										<div class="minus">
+        										<a href="{% url 'quantity' product.product.pk 'del' %}"><i class="ti-minus"></i></a>
+    										</div>
+    								<h7>{{ product.quantity }}</h7>
+    										<div class="plus">
+        										<a href="{% url 'quantity' product.product.pk 'add' %}"><i class="ti-plus"></i></a>
+    										</div>
+									</div>
+
+
+
+								</td>
+								<td class="total-amount" data-title="Total"><span>${{ product.get_total_price }}</span></td>
+								<td class="action" data-title="Remove"><a href="{% url 'delete_cart_product' product.pk %}"><i class="ti-trash remove-icon"></i></a></td>
+							</tr>
+						{% endfor %}
+
+						</tbody>
+					</table>
+					<!--/ End Shopping Summery -->
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-12">
+					<!-- Total Amount -->
+					<div class="total-amount">
+						<div class="row">
+							<div class="col-lg-8 col-md-5 col-12">
+							</div>
+							<div class="col-lg-4 col-md-7 col-12">
+								<div class="right">
+									<ul>
+										<li>Cart Subtotal price<span>${{ cart_total_price }}</span></li>
+										<li>Cart Subtotal quantity<span>{{ cart_total_quantity }}</span></li>
+
+									</ul>
+									<div class="button5">
+										<a href="{% url 'checkout' %}" class="btn">Checkout</a>
+										<a href="{% url 'index' %}" class="btn">Continue shopping</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--/ End Total Amount -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--/ End Shopping Cart -->
+			
+	<!-- Start Shop Services Area  -->
+	<section class="shop-services section">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-3 col-md-6 col-12">
+					<!-- Start Single Service -->
+					<div class="single-service">
+						<i class="ti-rocket"></i>
+						<h4>Free shiping</h4>
+						<p>Orders over $100</p>
+					</div>
+					<!-- End Single Service -->
+				</div>
+				<div class="col-lg-3 col-md-6 col-12">
+					<!-- Start Single Service -->
+					<div class="single-service">
+						<i class="ti-reload"></i>
+						<h4>Free Return</h4>
+						<p>Within 30 days returns</p>
+					</div>
+					<!-- End Single Service -->
+				</div>
+				<div class="col-lg-3 col-md-6 col-12">
+					<!-- Start Single Service -->
+					<div class="single-service">
+						<i class="ti-lock"></i>
+						<h4>Sucure Payment</h4>
+						<p>100% secure payment</p>
+					</div>
+					<!-- End Single Service -->
+				</div>
+				<div class="col-lg-3 col-md-6 col-12">
+					<!-- Start Single Service -->
+					<div class="single-service">
+						<i class="ti-tag"></i>
+						<h4>Best Peice</h4>
+						<p>Guaranteed price</p>
+					</div>
+					<!-- End Single Service -->
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- End Shop Newsletter -->
+
+
+<style>
+    .quantity {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 300px;
+        margin: 0 auto;
+        border: 1px solid #ccc;
+        padding: 10px;
+    }
+
+    .quantity .input-number {
+        flex: 1;
+        padding: 8px;
+        border: none;
+        text-align: center;
+    }
+
+    .quantity .minus,
+    .quantity .plus {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 30px;
+        height: 30px;
+        border: 0px solid #ccc;
+        cursor: pointer;
+    }
+
+    .quantity .minus a,
+    .quantity .plus a {
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        text-decoration: none;
+        color: black;
+    }
+</style>
+
+
+
+
+
+
+{% endblock main %}

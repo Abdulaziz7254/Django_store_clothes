@@ -1,0 +1,221 @@
+{% extends 'base.html' %}
+{% load likes_status_check %}
+{% block main %}
+
+
+	<div class="preloader">
+		<div class="preloader-inner">
+			<div class="preloader-icon">
+				<span></span>
+				<span></span>
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+
+	<section class="hero-slider">
+
+
+		<div class="single-slider" style="height: 100%; margin: 0 auto; background-image: url({{ main_product.get_image }}); background-position: center; background-repeat: no-repeat; height: 510px;">
+			<div class="container">
+				<div class="row no-gutters">
+					<div class="col-lg-9 offset-lg-3 col-12">
+						<div class="text-inner">
+							<div class="row">
+								<div class="col-lg-7 col-12">
+									<div class="hero-text" style="color:#F7941D;">
+										<h3>{{ main_product.name }} <h5>Description: {{ main_product.description }}</h5></h3>
+										<div class="button">
+											<a href="" class="btn">Shop Now!</a>
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+    <div class="product-area section">
+            <div class="container">
+				<div class="row">
+					<div class="col-12">
+						<div class="section-title">
+							<h2>Trending Item</h2>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12">
+						<div class="product-info">
+							<div class="nav-main">
+								<ul class="nav nav-tabs" id="myTab" role="tablist">
+									<li class="nav-item"><a class="nav-link " data-toggle="tab" href="#all" role="tab">All</a></li>
+									<li class="nav-item"><a class="nav-link " data-toggle="tab" href="#man" role="tab">Man</a></li>
+									<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#women" role="tab">Woman</a></li>
+									<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#both" role="tab">Both</a></li>
+								</ul>
+							</div>
+							<div class="tab-content" id="myTabContent">
+
+								<div class="tab-pane fade show " id="all" role="tabpanel">
+									<div class="tab-single">
+										<div class="row">
+											{% for product in products %}
+											{% include 'store/components/product_cart.html' %}
+											{% endfor %}
+										</div>
+									</div>
+								</div>
+
+								<div class="tab-pane fade show " id="man" role="tabpanel">
+									<div class="tab-single">
+										<div class="row">
+											{% for product in products %}
+											{%  if product.gender == 'MEN' %}
+											{% include 'store/components/product_cart.html' %}
+											{% endif %}
+											{% endfor %}
+										</div>
+									</div>
+								</div>
+
+								<div class="tab-pane fade show " id="women" role="tabpanel">
+									<div class="tab-single">
+										<div class="row">
+											{% for product in products %}
+											{%  if product.gender == 'WOMEN' %}
+											{% include 'store/components/product_cart.html' %}
+											{% endif %}
+											{% endfor %}
+										</div>
+									</div>
+								</div>
+
+								<div class="tab-pane fade show active" id="both" role="tabpanel">
+									<div class="tab-single">
+										<div class="row">
+											{% for product in products %}
+											{%  if product.gender == 'BOTH' %}
+											{% include 'store/components/product_cart.html' %}
+											{% endif %}
+											{% endfor %}
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+            </div>
+    </div>
+
+
+
+
+	<div class="product-area most-popular section">
+        <div class="container">
+            <div class="row">
+				<div class="col-12">
+					<div class="section-title">
+						<h2>Hot Item</h2>
+					</div>
+				</div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="owl-carousel popular-slider">
+						{% for product in products %}
+
+						{% if product.hot == True %}
+						<div class="single-product">
+							<div class="product-img">
+								<a href="product-details.html">
+									<img class="default-img" src="{{ product.get_image }}" alt="#">
+									<img class="hover-img" src="{{ product.get_image }}" alt="#">
+									<span class="out-of-stock">Hot</span>
+								</a>
+								<div class="button-head">
+															<div class="product-action">
+																<a href="{% url 'detail' product.pk %}"><i class="ti-eye"></i></a>
+																{% if request.user.is_authenticated %}
+																{% check_status request.user product.pk as like  %}
+																{% if like  %}
+																<a title="Wishlist" href="{% url 'add_to_liked' product.pk %}"><i class="ti-heart" style="color:red;"></i><span>Delete from Wishlist</span></a>
+																{% else %}
+																<a title="Wishlist" href="{% url 'add_to_liked' product.pk %}"><i class="ti-heart"></i><span>Add to Wishlist</span></a>
+																{% endif %}
+																{% else %}
+																<a title="Wishlist" ><i class="ti-heart"></i><span>First you should login</span></a>
+																{% endif %}
+															</div>
+															{% if request.user.is_authenticated %}
+			  												<div class="product-action-2">
+																<a href="{% url 'quantity' product.pk 'add' %}">Add to cart</a>
+															</div>
+															{% endif %}
+														</div>
+							</div>
+							<div class="product-content">
+								<h3><a>{{ product.name }}</a></h3>
+								<div class="product-price">
+									<span class="old">${{ product.price }}</span>
+									<span>${{ product.price }}</span>
+								</div>
+							</div>
+						</div>
+						{% endif %}
+						{% endfor %}
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+	<section class="shop-services section home">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-3 col-md-6 col-12">
+					<div class="single-service">
+						<i class="ti-rocket"></i>
+						<h4>Free shiping</h4>
+						<p>Orders over $100</p>
+					</div>
+				</div>
+				<div class="col-lg-3 col-md-6 col-12">
+					<div class="single-service">
+						<i class="ti-reload"></i>
+						<h4>Free Return</h4>
+						<p>Within 30 days returns</p>
+					</div>
+				</div>
+				<div class="col-lg-3 col-md-6 col-12">
+					<div class="single-service">
+						<i class="ti-lock"></i>
+						<h4>Sucure Payment</h4>
+						<p>100% secure payment</p>
+					</div>
+				</div>
+				<div class="col-lg-3 col-md-6 col-12">
+					<div class="single-service">
+						<i class="ti-tag"></i>
+						<h4>Best Peice</h4>
+						<p>Guaranteed price</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
+</html>
+ {% endblock main %}
+

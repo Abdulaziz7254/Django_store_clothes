@@ -1,0 +1,122 @@
+{% load static %}
+{% load navbar %}
+
+{% if request.path == '/' %}
+{% get_categories as categories  %}
+
+{% endif %}
+
+
+
+<header class="header shop">
+
+		<div class="middle-inner">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-2 col-md-2 col-12">
+						<!-- Logo -->
+						<div class="logo">
+							<a href="{% url 'index' %}"><img src="{% static 'store/images/logo.png' %}" alt="logo"></a>
+						</div>
+						<!--/ End Logo -->
+						<!-- Search Form -->
+						<div class="search-top">
+							<div class="top-search"><a href="#0"><i class="ti-search"></i></a></div>
+							<!-- Search Form -->
+							<div class="search-top">
+								<form class="search-form">
+									<input type="text" placeholder="Search here..." name="search">
+									<button value="search" type="submit"><i class="ti-search"></i></button>
+								</form>
+							</div>
+							<!--/ End Search Form -->
+						</div>
+						<!--/ End Search Form -->
+						<div class="mobile-nav"></div>
+					</div>
+					<div class="col-lg-8 col-md-7 col-12">
+						<div class="search-bar-top">
+							<div class="search-bar">
+								<select>
+									<option selected="selected">All Category</option>
+									{% for category in categories %}
+									<option>{{ category.name }}</option>
+									{% endfor %}
+								</select>
+								<form>
+									<input name="search" placeholder="Search Products Here....." type="search">
+									<button class="btnn"><i class="ti-search"></i></button>
+								</form>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-2 col-md-3 col-12">
+
+						<div class="right-bar">
+							{% if request.user.is_authenticated %}
+							<!-- Search Form -->
+							<div class="sinlge-bar">
+								<a href="{% url 'liked' %}" class="single-icon"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
+							</div>
+							<div class="sinlge-bar">
+								<a href="{% url 'auth' %}" class="single-icon"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a>
+							</div>
+							<div class="sinlge-bar shopping">
+								{% get_card_items request as cart %}
+								<a href="{% url 'cart' %}" class="single-icon"><i class="fa fa-shopping-basket"></i> <span class="total-count">{{ cart.get_cart_quantity }}</span></a>
+							</div>
+						{% else %}
+						<a href="{% url 'auth' %}"><h5>Login</h5></a>
+						{% endif %}
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Header Inner -->
+		<div class="header-inner">
+			<div class="container">
+				<div class="cat-nav-head">
+					<div class="row">
+						<div class="col-lg-3">
+							<div class="all-category">
+								<h3 class="cat-heading"><i class="fa fa-bars" aria-hidden="true"></i>CATEGORIES</h3>
+								<ul class="main-category">
+
+							       {% for category in categories %}
+									<li><a href="{% url 'category' category.pk %}">{{ category.name }}</a></li>
+									{% endfor %}
+								</ul>
+							</div>
+						</div>
+						<div class="col-lg-9 col-12">
+							<div class="menu-area">
+								<!-- Main Menu -->
+								<nav class="navbar navbar-expand-lg">
+									<div class="navbar-collapse">
+										<div class="nav-inner">
+											<ul class="nav main-menu menu navbar-nav">
+													<li class="active"><a href="{% url 'index' %}">Home</a></li>
+													<li><a href="#">Service</a></li>
+													<li><a href="#">Shop<i class="ti-angle-down"></i><span class="new">New</span></a>
+														<ul class="dropdown">
+															<li><a href="{% url 'cart' %}">Cart</a></li>
+															<li><a href="{% url 'checkout' %}">Checkout</a></li>
+														</ul>
+													</li>
+													<li><a href="#">Pages</a></li>
+													<li><a href="contact.html">Contact Us</a></li>
+												</ul>
+										</div>
+									</div>
+								</nav>
+								<!--/ End Main Menu -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--/ End Header Inner -->
+	</header>
